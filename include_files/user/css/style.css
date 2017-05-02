@@ -773,3 +773,14 @@ a.socialIcon:hover, .socialHoverClass {
  .teamhelplist li{
     margin-bottom:20px
  }
+ 
+/* register modal*/
+#registermodal.modal{
+    overflow-y:auto;
+}
+#registermodal .registerlinkblock{
+    padding:28% 0
+}
+.m-t-15{
+   margin-top:15px
+}

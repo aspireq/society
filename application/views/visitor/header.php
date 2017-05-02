@@ -117,14 +117,14 @@
         </div>
         <!-- register modal -->
         <div class="modal fade" id="registermodal" tabindex="-1" role="dialog" aria-labelledby="registerblock">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content row">
-                    <div class="col-md-5 registerlinkblock" id="gr">
+                    <div class="col-md-4 registerlinkblock" id="gr">
                         <img src="<?php echo base_url(); ?>include_files/user/images/apartment.png" />
                         <h4>Already Adda Member ??</h4>
                         <h4><a data-toggle="modal" href="#signinmodal" data-dismiss="modal">Login Now</a></h4>
                     </div>
-                    <div class="col-md-7 p-0">
+                    <div class="col-md-8 p-0">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="registerblock">Sign Up</h4>
@@ -134,77 +134,116 @@
                                 <div id="register_message">                            
                                 </div>
                                 <input type="hidden" name="valid_login_url" id="valid_login_url" value="<?php echo base_url(); ?>auth_public"/>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="apartmentname">Apartment Name<sup>*</sup></label>
-                                    <input class="form-control" id="apartmentname" name="apartmentname" type="text" data-error="Enter valid apartment name" required>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="apartmentname">Apartment Name<sup>*</sup></label>
+                                        <input class="form-control" id="apartmentname" name="apartmentname" type="text" data-error="Enter valid apartment name" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="register_username">Username<sup>*</sup></label>
-                                    <input class="form-control" id="register_username" name="register_username" type="text" data-error="Enter valid username" required>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="register_username">Username<sup>*</sup></label>
+                                        <input class="form-control" id="register_username" name="register_username" type="text" data-error="Enter valid username" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="register_email_address">Email<sup>*</sup></label>
-                                    <input class="form-control" id="register_email_address" name="register_email_address" data-error="Enter valid phone email" required>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="register_email_address">Email<sup>*</sup></label>
+                                        <input class="form-control" id="register_email_address" name="register_email_address" data-error="Enter valid Email" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="passwordmain">Password<sup>*</sup></label>
-                                    <input class="form-control" id="passwordmain" type="password" name="passwordmain" data-error="Enter password" required>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="mobile_no">Phone / Mobile <sup>*</sup></label>
+                                        <input class="form-control" id="mobile_no" name="mobile_no" type="text" data-error="Enter valid phone/mobile number" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="inputPasswordConfirm">Password<sup>*</sup></label>
-                                    <input class="form-control" id="inputPasswordConfirm" type="password" name="inputPasswordConfirm" data-error="Confirm password must be match with password" required>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="passwordmain">Password<sup>*</sup></label>
+                                        <input class="form-control" id="passwordmain" type="password" name="passwordmain" data-error="Enter password" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="register_email_address">Email<sup>*</sup></label>
-                                    <input class="form-control" id="register_email_address" type="register_email_address" data-error="Enter valid phone email" required>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="inputPasswordConfirm">Re-enter Password<sup>*</sup></label>
+                                        <input class="form-control" id="inputPasswordConfirm" type="password" name="inputPasswordConfirm" data-error="Confirm password must be match with password" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="mobile_no">Phone / Mobile <sup>*</sup></label>
-                                    <input class="form-control" id="mobile_no" name="mobile_no" type="text" data-error="Enter valid phone/mobile number" required>
-                                    <div class="help-block with-errors"></div>
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="address">Address<sup>*</sup></label>
+                                        <textarea class="form-control" name="address" id="address" required data-error="Enter address" rows="1"></textarea>                                    
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="address">Address<sup>*</sup></label>
-                                    <textarea class="form-control" name="address" id="address" required data-error="Enter address"></textarea>                                    
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+<!--                                        <label class="control-label" for="city">Select City<sup>*</sup></label>-->
+                                        <select class="form-control" name="city" id="city" required="" data-error="Enter city">
+                                            <option value="">Select City</option>
+                                            <option value="Surat">Surat</option>
+                                            <option value="Ahmedabad">Ahmedabad</option>                                        
+                                        </select>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="pincode">Phone / Mobile <sup>*</sup></label>
-                                    <input class="form-control" id="pincode" name="pincode" type="text" data-error="Enter valid pincode" required>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="pincode">Pincode<sup>*</sup></label>
+                                        <input class="form-control" name="pincode" id="pincode" required data-error="Enter pincode"></input>                                    
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="city">Select City<sup>*</sup></label>
-                                    <select class="form-control" name="city" id="city" required="" data-error="Enter city">
-                                        <option value="">Select City</option>
-                                        <option value="Surat">Surat</option>
-                                        <option value="Ahmedabad">Ahmedabad</option>                                        
-                                    </select>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="blocks">All Blocks / Wings <sup>*</sup></label>
+                                        <input class="form-control" id="blocks" name="blocks" type="text" data-error="Enter valid value" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="blocks">All Blocks / Wings <sup>*</sup></label>
-                                    <input class="form-control" id="blocks" name="blocks" type="text" data-error="Enter valid value" required>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="total_flats">Total Flats <sup>*</sup></label>
+                                        <input class="form-control" id="total_flats" name="total_flats" type="text" data-error="Enter valid value" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="total_flats">Total Flats <sup>*</sup></label>
-                                    <input class="form-control" id="total_flats" name="total_flats" type="text" data-error="Enter valid value" required>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="my_block">My Block <sup>*</sup></label>
+                                        <input class="form-control" id="my_block" name="my_block" type="text" data-error="Enter valid value" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label" for="my_block">Total Flats <sup>*</sup></label>
-                                    <input class="form-control" id="my_block" name="my_block" type="text" data-error="Enter valid value" required>
-                                    <div class="help-block with-errors"></div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" for="my_flat">My Flat<sup>*</sup></label>
+                                        <input class="form-control" id="my_block" name="my_flat" type="text" data-error="Enter valid value" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-raised btn-info btn-block" name="signup_user" id="signup_user">Sign Up <i class="fa fa-send"></i></button>
+                                <div class="col-md-6">
+                                    <div class="m-t-15">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Owner
+                                        </label>
+                                        <label class="radio-inline">
+                                           <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Tenant
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-raised btn-info btn-block" name="signup_user" id="signup_user">Sign Up <i class="fa fa-send"></i></button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
