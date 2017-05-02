@@ -47,6 +47,11 @@ class Auth_admin extends CI_Controller {
     }
 
     function manage_users() {
+        if ($this->input->post()) {
+            echo "<pre>";
+            print_r($this->input->post());
+            die();
+        }
         $this->data['message'] = (!isset($this->data['message'])) ? $this->session->flashdata('message') : $this->data['message'];
         $this->data = $this->include_files();
         $this->load->view('admin/manage_users', $this->data);

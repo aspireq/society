@@ -30,7 +30,7 @@
                         </ul>
                         <div class="tab-content">
                            <div class="tab-pane active" id="tabOne">
-                              <form>
+                               <form method="post" role="form">
                                  <div class="table-responsive">
                                     <table id="" class="table table-bordered table-condensed no-margin">
                                        <thead>
@@ -45,19 +45,21 @@
                                              <th>Resident is</th>
                                              <th>Email Address</th>
                                           </tr>
-                                       </thead>
-                                       
+                                       </thead>                                       
                                        <tbody>
+                                          <?php 
+                                          for($i=1;$i<=10;$i++) {
+                                          ?>
                                           <tr>
-                                             <td>1</td>
+                                             <td><?php echo $i; ?></td>
                                              <td>
-                                                <input id="firstName_1" name="firstName_1" size="6" type="text" class="form-control">
+                                                <input id="<?php echo 'firstname-'.$i; ?>" name="firstname[]" size="6" type="text" class="form-control">
                                              </td>
                                              <td>
-                                                <input id="lastName_1" name="lastName_1" size="6" type="text" class="form-control">
+                                                <input id="<?php echo 'lastname-'.$i; ?>" name="lastname[]" size="6" type="text" class="form-control">
                                              </td>
                                              <td>
-                                                <select name="block_1" id="block_1" class="form-control">
+                                                <select name="block[]" id="<?php echo 'block-'.$i; ?>" class="form-control">
                                                    <option value=""></option>
                                                     <option value="6">6</option>
                                                     <option value="21">21</option>
@@ -73,77 +75,33 @@
                                                 </select>
                                              </td>
                                              <td>
-                                                <input id="flatNo_1" name="flatNo_1" size="2" type="text" class="form-control">
+                                                <input id="<?php echo 'flatno-'.$i; ?>" name="flatno[]" size="2" type="text" class="form-control">
                                              </td>
                                              <td>
-                                                <input id="mobile_1" name="mobile_1" size="6" type="text" class="form-control">
+                                                <input id="<?php echo 'mobile-'.$i; ?>" name="mobile[]" size="6" type="text" class="form-control">
                                              </td>
                                              <td>
-                                                <input id="intercom_1" name="intercom_1" size="3" type="text" class="form-control">
+                                                <input id="<?php echo 'intercom-'.$i; ?>" name="intercom[]" size="3" type="text" class="form-control">
                                              </td>
                                              <td>
                                                 <div class="radio">
-                                                  <label><input type="radio" name="optradio">Tenant</label>
+                                                    <label><input type="radio" name="user_type[]" id="<?php echo 'user_type_tenant-'.$i; ?>" value="Tenant">Tenant</label>
                                                 </div>
                                                 <div class="radio">
-                                                  <label><input type="radio" name="optradio">Owner</label>
+                                                    <label><input type="radio" name="user_type[]" id="<?php echo 'user_type_owner-'.$i; ?>" value="Owner">Owner</label>
                                                 </div>
                                              </td>
                                              <td>
-                                                <input id="email_1" name="email_1" type="text" class="form-control">
+                                                <input id="email_1" name="email[]" type="text" class="form-control">
                                              </td>
                                           </tr>
-                                          <tr>
-                                             <td>2</td>
-                                             <td>
-                                                <input id="firstName_1" name="firstName_1" size="6" type="text" class="form-control">
-                                             </td>
-                                             <td>
-                                                <input id="lastName_1" name="lastName_1" size="6" type="text" class="form-control">
-                                             </td>
-                                             <td>
-                                                <select name="block_1" id="block_1" class="form-control">
-                                                   <option value=""></option>
-                                                    <option value="6">6</option>
-                                                    <option value="21">21</option>
-                                                    <option value="22">22</option>
-                                                    <option value="23">23</option>
-                                                    <option value="24">24</option>
-                                                    <option value="25">25</option>
-                                                    <option value="26">26</option>
-                                                    <option value="27">27</option>
-                                                    <option value="28">28</option>
-                                                    <option value="29">29</option>
-                                                    <option value="30">30</option>
-                                                </select>
-                                             </td>
-                                             <td>
-                                                <input id="flatNo_1" name="flatNo_1" size="2" type="text" class="form-control">
-                                             </td>
-                                             <td>
-                                                <input id="mobile_1" name="mobile_1" size="6" type="text" class="form-control">
-                                             </td>
-                                             <td>
-                                                <input id="intercom_1" name="intercom_1" size="3" type="text" class="form-control">
-                                             </td>
-                                             <td>
-                                                <div class="radio">
-                                                  <label><input type="radio" name="optradio">Tenant</label>
-                                                </div>
-                                                <div class="radio">
-                                                  <label><input type="radio" name="optradio">Owner</label>
-                                                </div>
-                                             </td>
-                                             <td>
-                                                <input id="email_1" name="email_1" type="text" class="form-control">
-                                             </td>
-                                          </tr>
+                                          <?php } ?>
                                        </tbody>
                                     </table>
                                     <div class="form-group">
                                     <br/>
-                                       <label class="radio-inline"><input type="radio" name="optradio">Also Send Invites</label>
-                                       <label class="radio-inline"><input type="radio" name="optradio">Do not Send Invites</label>
+                                    <label class="radio-inline"><input type="radio" name="send_invites" id="send_invites">Also Send Invites</label>
+                                    <label class="radio-inline"><input type="radio" name="send_invites" id="not_send_invites">Do not Send Invites</label>
                                     </div>
                                     <div class="form-group">
                                        <button class="btn btn-info">Create User Account</button>
