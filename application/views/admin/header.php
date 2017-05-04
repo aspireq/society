@@ -33,7 +33,8 @@
                   </div>
                   <a id="drop4" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-account_circle"></i></a>
                   <ul class="dropdown-menu">
-                     <li class="dropdown-content"><a href="#"><i class="icon-warning2"></i>Update Password<br><span>Your password will expire in 7 days.</span></a> <a href="profile.html">Edit Profile</a> <a href="forgot-pwd.html">Change Password</a> <a href="profile.html">Settings</a> <a href="login.html">Logout</a></li>
+                     <li class="dropdown-content"><a href="#"><i class="icon-warning2"></i>Update Password<br><span>Your password will expire in 7 days.</span></a> <a href="profile.html">Edit Profile</a> <a href="forgot-pwd.html">Change Password</a> <a href="profile.html">Settings</a> 
+                         <a href="<?php echo base_url();?>home/logout">Logout</a></li>
                   </ul>
                </li>
             </ul>

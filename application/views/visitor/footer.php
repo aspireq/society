@@ -57,60 +57,8 @@
         </div>
     </div>
 </section>
-<!-- The scroll to top feature -->
 <div class="scroll-top-wrapper">
     <span class="scroll-top-inner">
         <i class="fa fa-lg fa-arrow-up"></i>
     </span>
 </div>
-<script src="<?php echo base_url(); ?>include_files/user/js/jquery-1.11.3.min.js"></script>
-<script src="<?php echo base_url(); ?>include_files/user/js/bootstrap.min.js"></script>
-<script src="<?php echo base_url(); ?>include_files/user/js/material.min.js"></script>
-<script src="<?php echo base_url(); ?>include_files/user/js/ripples.min.js"></script>
-<script type="text/javascript">
-    $.material.init()
-</script>
-<script src="<?php echo base_url(); ?>include_files/user/js/smoothscroll.js"></script>
-<script src="<?php echo base_url(); ?>include_files/user/js/wow.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>include_files/user/js/aspire.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>include_files/user/js/validator.js"></script>
-<script>
-    $(function ()
-    {
-        $('#register_user').submit(function (event)
-        {
-            event.preventDefault();
-            var submit_url = $(this).attr('action');
-            var valid_login_url = $('#valid_login_url').val();
-            $.ajax(
-                    {
-                        url: submit_url,
-                        type: 'POST',
-                        data: $("#register_user").serialize(),
-                        dataType: 'json',
-                        success: function (data)
-                        {
-                            $('#register_message').empty();
-                            $('#register_message').html('');
-                            $('#register_message').removeClass('alert alert-success alert-dismissable');
-                            $('#register_message').removeClass('alert alert-danger alert-dismissable');
-                            if (data.login_status == true)
-                            {
-                                $('#register_message').addClass('alert alert-success alert-dismissable');
-                                $('#register_message').append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
-                                $('#register_message').append(data.message);
-//                            setTimeout(function () {
-//                                window.location.href = valid_login_url;
-//                            }, 2000);
-                            } else {
-                                $('#register_message').addClass('alert alert-danger alert-dismissable');
-                                $('#register_message').append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
-                                $('#register_message').append(data.message);
-                            }
-                        }
-                    });
-        })
-    });
-</script>
-</body>
-</html>

@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 * Name: flexi auth Config
 *
@@ -58,7 +58,7 @@
 	$config['database']['user_acc']['columns']['group_id'] = 'uacc_group_fk';
 	$config['database']['user_acc']['columns']['email'] = 'uacc_email';
 	$config['database']['user_acc']['columns']['username'] = 'uacc_username'; 
-	$config['database']['user_acc']['columns']['password'] = 'uacc_password';	
+	$config['database']['user_acc']['columns']['password'] = 'uacc_password';
 	$config['database']['user_acc']['columns']['ip_address'] = 'uacc_ip_address';
 	$config['database']['user_acc']['columns']['salt'] = 'uacc_salt';
 	$config['database']['user_acc']['columns']['activation_token'] = 'uacc_activation_token';
@@ -76,11 +76,10 @@
 	
 	// Custom columns can be added to the main user account table to enable library functions to handle additional custom data stored within the table.
 	$config['database']['user_acc']['custom_columns'] = array(
-            //'bitcoin_account_no','reffrence_link','reffered_by'
+            'user_type'
 	);
 
-	###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
-	
+	###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
 	/**
 	 * User Group Table
 	 * The user group table is used to allocate a group classification to users, typically this is used to group users as either admins or public users.
@@ -119,9 +118,9 @@
 	*/ 
 	$config['database']['user_privilege_users']['table'] = 'user_privilege_users';
 	$config['database']['user_privilege_users']['columns']['id'] = 'upriv_users_id';
-	$config['database']['user_privilege_users']['columns']['user_id'] = 'upriv_users_uacc_fk';
+	$config['database']['user_privilege_users']['columns']['id'] = 'upriv_users_uacc_fk';
 	$config['database']['user_privilege_users']['columns']['privilege_id'] = 'upriv_users_upriv_fk';
-	
+
 	/**
 	 * User Privilege Groups Table
 	 * The user privilege group table is used to assign privileges to user groups. Multiple privileges can be assigned to a user group.
@@ -144,7 +143,7 @@
 	*/ 
 	$config['database']['user_sess']['table'] = 'user_login_sessions';
 	$config['database']['user_sess']['join'] = 'user_login_sessions.usess_uacc_fk';
-	$config['database']['user_sess']['columns']['user_id'] = 'usess_uacc_fk';
+	$config['database']['user_sess']['columns']['id'] = 'usess_uacc_fk';
 	$config['database']['user_sess']['columns']['series'] = 'usess_series';
 	$config['database']['user_sess']['columns']['token'] = 'usess_token';
 	$config['database']['user_sess']['columns']['date'] = 'usess_login_date';
@@ -169,8 +168,42 @@
 	 * $config['database']['custom']['#Array Alias#']['join'] = '#Actual table name#.#Foreign key column to main user table "user_acc"#';
 	 * $config['database']['custom']['#Array Alias#']['custom_columns'] = array('#Column1#','#Column2#');
 	 *
-	 * Note: No custom tables are required to use flexi auth, see the demo config file for examples of including custom tables.
+	 * Note: No custom tables are required to use flexi auth and the custom 'User Profile' and 'User Address' tables below are set only as examples.
 	*/
+	
+	###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
+
+	/**
+	 * Custom User Profile Table
+	 * Example table used to hold profile data on each user.
+	 *
+	 * Note: This table and all included fields can be expanded upon or removed completely.
+	*/ 
+	$config['database']['custom']['user_profile']['table'] = 'demo_user_profiles';
+	$config['database']['custom']['user_profile']['primary_key'] = 'upro_id';
+	$config['database']['custom']['user_profile']['foreign_key'] = 'upro_uacc_fk';
+	$config['database']['custom']['user_profile']['join'] = 'demo_user_profiles.upro_uacc_fk';
+	$config['database']['custom']['user_profile']['custom_columns'] = array(
+		'upro_first_name','upro_last_name','upro_phone','upro_newsletter','upro_familyname','upro_fathername','whatsapp_no','other_mobileno'
+	);
+
+	###+++++++++++++++++++++++++++###
+	
+	/**
+	 * Custom User Address Table
+	 * Example table used to hold address data on each user.
+	 * By holding this data in a separate table from the profile data table above, a user can save multiple addresses.
+	 *
+	 * Note: This table and all included fields can be expanded upon or removed completely.
+	*/ 
+	$config['database']['custom']['user_address']['table'] = 'demo_user_address';
+	$config['database']['custom']['user_address']['primary_key'] = 'uadd_id';
+	$config['database']['custom']['user_address']['foreign_key'] = 'uadd_uacc_fk';
+	$config['database']['custom']['user_address']['join'] = 'demo_user_address.uadd_uacc_fk';
+	$config['database']['custom']['user_address']['custom_columns'] = array(
+		'uadd_address_01','uadd_post_code','uadd_city'
+	);
+	
 	
 	###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
 	// DATABASE SETTINGS
@@ -184,13 +217,6 @@
 	 * Example: Change $config['database']['settings']['example'] = 'example_value_1' to $config['database']['settings']['example'] = 'example_value_2'
 	*/ 
 
-        $config['database']['custom']['user_profile']['table'] = 'demo_user_profiles';
-	$config['database']['custom']['user_profile']['primary_key'] = 'upro_id';
-	$config['database']['custom']['user_profile']['foreign_key'] = 'upro_uacc_fk';
-	$config['database']['custom']['user_profile']['join'] = 'demo_user_profiles.upro_uacc_fk';
-	$config['database']['custom']['user_profile']['custom_columns'] = array(
-		'upro_first_name','upro_last_name','upro_phone','upro_mobile','date_of_birth','landline_no','state','city','pincode','mobile_no'
-	);
 	###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 	/**
@@ -217,7 +243,7 @@
 	 * 
 	 * Note: Any column within the user main account, custom or group tables can be added to array
 	*/ 
-	$config['database']['settings']['search_user_cols'] = array('uacc_email');
+	$config['database']['settings']['search_user_cols'] = array('uacc_email', 'upro_first_name', 'upro_last_name');
 	
 	/**
 	 * Database Date / Time Format
@@ -243,7 +269,7 @@
 	 * 
 	 * If required, it is possible to set your own name for each session variable.
 	 * Note: Only change the name in the apostrophes (after the '=' sign), and not the $config array names.
-	 * Example: Change $config['sessions']['user_id'] = 'user_id' to $config['sessions']['user_id'] = 'new_session_name'
+	 * Example: Change $config['sessions']['id'] = 'id' to $config['sessions']['id'] = 'new_session_name'
 	*/ 
 
 	###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
@@ -265,7 +291,7 @@
 	 * User Account Data Sessions
 	 * Used for performing various CRUD functions.
 	*/
-	$config['sessions']['user_id'] = 'user_id';
+	$config['sessions']['id'] = 'id';
 	$config['sessions']['is_admin'] = 'admin';
 	$config['sessions']['group'] = 'group';
 	$config['sessions']['privileges'] = 'privileges';
@@ -301,7 +327,7 @@
 	 * 
 	 * If required, it is possible to set your own name for each cookie variable.
 	 * Note: Only change the name in the apostrophes (after the '=' sign), and not the $config array names.
-	 * Example: Change $config['cookies']['user_id'] = 'user_id' to $config['cookies']['user_id'] = 'new_session_name'
+	 * Example: Change $config['cookies']['id'] = 'id' to $config['cookies']['id'] = 'new_session_name'
 	*/ 
 
 	###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
@@ -310,7 +336,7 @@
 	 * 'Remember me' Cookies
 	 * Used to store 'Remember me' data to automatically log a user in next time they visit the website.
 	*/
-	$config['cookies']['user_id'] = 'user_id';
+	$config['cookies']['id'] = 'id';
 	$config['cookies']['remember_series'] = 'remember_series';
 	$config['cookies']['remember_token'] = 'remember_token';
 	
@@ -369,6 +395,7 @@
 	 *   If 'Remember me' cookies are used, and a users login session expires, they will remain logged in via the 'Remember me' cookie.
 	 *   There are then functions within the library to check whether a user is logged in via entering a password, or via a cookie - typically sensitive data should 
 	 *   only be available to users logged in via a password, and less sensitive data to users logged in via 'Remember me' cookies.
+         * * Changed for dhobisamaj 21-3-2017 from 60*60*3 to 0
 	*/
 	$config['security']['login_session_expire'] = 60*60*3;
 	
@@ -417,7 +444,7 @@
 	
 	/**
 	 * Set whether a users 'Remember me' login cookies have their lifetime extended when their session token is validated.
-	 * @param bool
+	 * @param bool         
 	*/
 	$config['security']['extend_cookies_on_login'] = TRUE;
 
@@ -484,7 +511,7 @@
 	 * Note: If a user exceeds 3 times the limit set, the resulting time ban is doubled to further slow down attempts.
  	 * Example: 0 = unlimited attempts, 3 = 3 attempts.
 	*/
-	$config['security']['login_attempt_limit'] = 3;
+	$config['security']['login_attempt_limit'] = 15;
 	
 	/**
 	 * If a user has exceeded the failed login attempt limit, set the length of time they must wait before they can attempt to login again.
@@ -579,15 +606,14 @@
 	 * @param: int
 	*/
 	$config['settings']['default_group_id'] = 1;
-        
+
     /**
      * Set whether user privileges should be determined by individual privileges assigned per user, or via privileges assigned to a users user group.
      * @param array
      * 
      * Options: array('user','group'), array('user'), array('group')
-     * Default: individual user privileges only.
      */
-    $config['settings']['privilege_sources'] = array('user');
+    $config['settings']['privilege_sources'] = array('user','group');
 
 	
 	###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
@@ -606,10 +632,10 @@
 	###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 	
 	// Site title shown as 'from' header on emails.
-	$config['email']['site_title'] = "realgujarat";
+	$config['email']['site_title'] = "Society";
 	
 	// Reply email shown as 'from' header on emails.
-	$config['email']['reply_email'] = "admin@realgujarat.com";
+	$config['email']['reply_email'] = "no-reply@website.com";
 	
 	/**
 	 * Type of email to send, options: 'html', 'text'.

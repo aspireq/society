@@ -32,13 +32,24 @@ class Home extends CI_Controller {
 
     function register() {
         if ($this->input->is_ajax_request()) {
-            echo "<pre>";
-            print_r($this->input->post());
-            die();
+            $this->load->model('demo_auth_model');
+            $this->demo_auth_model->register_account();
+            die(json_encode(array('message' => $this->session->flashdata('message'), 'login_status' => $this->session->flashdata('inserted_user_id'))));
+        }
+    }
+
+    function login_via_ajax() {
+        if ($this->input->is_ajax_request()) {
             $this->load->model('demo_auth_model');
             $this->demo_auth_model->login_via_ajax();
             die(json_encode(array('message' => $this->flexi_auth->get_messages(), 'login_status' => $this->flexi_auth->is_logged_in())));
         }
+    }
+
+    function logout() {
+        $this->flexi_auth->logout(TRUE);
+        $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
+        redirect('home');
     }
 
     public function include_files() {
@@ -48,6 +59,11 @@ class Home extends CI_Controller {
     }
 
     public function home() {
+        $states_obj = (array) $this->Common_model->select_where('states', array('country_id' => 101));
+        $states_arr = array_map(function($o) {
+            return $o->id;
+        }, $states_obj);
+        $this->data['cities'] = $this->Common_model->get_cities($states_arr);
         $this->data = $this->include_files();
         $this->load->view('visitor/home', $this->data);
     }
@@ -69,7 +85,7 @@ class Home extends CI_Controller {
 
     public function career() {
         $this->data = $this->include_files();
-        $this->load->view('user/career', $this->data);
+        $this->load->view('visitor/career', $this->data);
     }
 
     public function blog() {

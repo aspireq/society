@@ -16,28 +16,17 @@ class User extends CI_Controller {
         $this->auth = new stdClass;
         $this->load->library('flexi_auth');
         $this->data = null;
-        if ($this->flexi_auth->is_logged_in()) {
-            $this->data['userinfo'] = $this->userinfo = $this->flexi_auth->get_user_by_identity_row_array();
-            $this->user_id = $this->data['userinfo']['uacc_id'];
+        if (!$this->flexi_auth->is_logged_in_via_password() || !$this->flexi_auth->get_user_group_id()) {
+            $this->flexi_auth->set_error_message('You must login as an admin to access this area.', TRUE);
+            $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
+            redirect('home');
         }
-    }
-
-    function login_via_ajax() {
-        if ($this->input->is_ajax_request()) {
-            $this->load->model('demo_auth_model');
-            $this->demo_auth_model->login_via_ajax();
-            die(json_encode(array('message' => $this->flexi_auth->get_messages(), 'login_status' => $this->flexi_auth->is_logged_in())));
-        }
+        $this->data['userinfo'] = $this->userinfo = $this->flexi_auth->get_user_by_identity_row_array();
+        $this->user_id = $this->data['userinfo']['uacc_id'];
     }
 
     function index() {
         $this->home();
-    }
-
-    function logout() {
-        $this->flexi_auth->logout(TRUE);
-        $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
-        redirect('reseller/home');
     }
 
     function include_files() {

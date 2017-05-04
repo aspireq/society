@@ -111,46 +111,88 @@ function updateGradient()
 
 setInterval(updateGradient, 10);
 // Login Via Ajax
-//$(function ()
-//{
-//    $('#login').submit(function (event)
-//    {
-//        event.preventDefault();
-//        var submit_url = $(this).attr('action');
-//        var $form_inputs = $(this).find(':input');
-//        var form_data = {};
-//        $form_inputs.each(function ()
-//        {
-//            form_data[this.name] = $(this).val();
-//        });
-//        var valid_login_url = $('#valid_login_url').val();
-//        $.ajax(
-//                {
-//                    url: submit_url,
-//                    type: 'POST',
-//                    data: form_data,
-//                    dataType: 'json',
-//                    success: function (data)
-//                    {
-//                        $('#login_message').empty();
-//                        $('#login_message').html('');
-//                        $('#login_message').removeClass('alert alert-success alert-dismissable');
-//                        $('#login_message').removeClass('alert alert-danger alert-dismissable');
-//                        if (data.login_status == true)
-//                        {
-//                            $('#login_message').addClass('alert alert-success alert-dismissable');
-//                            $('#login_message').append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
-//                            $('#login_message').append(data.message);
-//                            setTimeout(function () {
-//                                window.location.href = valid_login_url;
-//                            }, 2000);
-//                        } else {
-//                            $('#login_message').addClass('alert alert-danger alert-dismissable');
-//                            $('#login_message').append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
-//                            $('#login_message').append(data.message);
-//                        }
-//                    }
-//                });
-//    })
-//});
+$(function ()
+{
+    $('#login_form').submit(function (event)
+    {
+        event.preventDefault();
+        var submit_url = $(this).attr('action');
+        var $form_inputs = $(this).find(':input');
+        var form_data = {};
+        $form_inputs.each(function ()
+        {
+            form_data[this.name] = $(this).val();
+        });
+        var valid_login_url = $('#valid_login_url').val();
+        $.ajax(
+                {
+                    url: submit_url,
+                    type: 'POST',
+                    data: form_data,
+                    dataType: 'json',
+                    success: function (data)
+                    {
+                        $('#login_message').empty();
+                        $('#login_message').html('');
+                        $('#login_message').removeClass('alert alert-success alert-dismissable');
+                        $('#login_message').removeClass('alert alert-danger alert-dismissable');
+                        if (data.login_status === true)
+                        {
+                            $('#login_message').addClass('alert alert-success alert-dismissable');
+                            $('#login_message').append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
+                            $('#login_message').append(data.message);
+                            setTimeout(function () {
+                                window.location.href = valid_login_url;
+                            }, 2000);
+                        } else {
+                            $('#login_message').addClass('alert alert-danger alert-dismissable');
+                            $('#login_message').append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
+                            $('#login_message').append(data.message);
+                        }
+                    }
+                });
+    });
+});
+$(function ()
+{
+    $.material.init();
+    $('#pincode, #mobile_no').on('change keyup', function () {
+        var sanitized = $(this).val().replace(/[^-.0-9]/g, '');
+        sanitized = sanitized.replace(/(.)-+/g, '$1');
+        sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
+        $(this).val(sanitized);
+    });
+    $('#register_user').validator().on('submit', function (e) {
+        if (e.isDefaultPrevented()) {
+            return false;
+        } else {
+            e.preventDefault();
+            var submit_url = $(this).attr('action');
+            $.ajax({
+                url: submit_url,
+                type: 'POST',
+                data: $("#register_user").serialize(),
+                dataType: 'json',
+                success: function (data)
+                {
+                    $('#register_message').empty();
+                    $('#register_message').html('');
+                    $('#register_message').removeClass('alert alert-success alert-dismissable');
+                    $('#register_message').removeClass('alert alert-danger alert-dismissable');
+                    if (data.login_status == true)
+                    {
+                        $('#register_message').addClass('alert alert-success alert-dismissable');
+                        $('#register_message').append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
+                        $('#register_message').append(data.message);
+                        $('#register_user')[0].reset();
+                    } else {
+                        $('#register_message').addClass('alert alert-danger alert-dismissable');
+                        $('#register_message').append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
+                        $('#register_message').append(data.message);
+                    }
+                }
+            });
+        }
+    });
+});
 

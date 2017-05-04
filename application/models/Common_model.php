@@ -45,5 +45,13 @@ class Common_model extends CI_Model {
         $insert_id = $this->db->insert($table, $data);
         return $this->db->insert_id();
     }
+    
+    function get_cities($states) {
+        $this->db->select();
+        $this->db->from('cities');
+        $this->db->where_in('state_id',$states);
+        $qry = $this->db->get();
+        return $qry->result();
+    }
 
 }

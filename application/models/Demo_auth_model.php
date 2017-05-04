@@ -89,44 +89,42 @@ class Demo_auth_model extends CI_Model {
             array('field' => 'register_email_address', 'label' => 'Email Address', 'rules' => 'required|valid_email'),
             array('field' => 'register_username', 'label' => 'Username', 'rules' => 'required|min_length[4]|identity_available'),
             array('field' => 'passwordmain', 'label' => 'Password', 'rules' => 'required|validate_password'),
-            array('field' => 'inputPasswordConfirm', 'label' => 'Confirm Password', 'rules' => 'required|matches[passwordmain]'),
-            array('field' => 'mobile_no', 'label' => 'Mobile No.', 'rules' => 'required')
+            array('field' => 'inputPasswordConfirm', 'label' => 'Confirm Password', 'rules' => 'required|matches[passwordmain]'),              
         );
 
         $this->form_validation->set_rules($validation_rules);
 
         if ($this->form_validation->run()) {
 
-            $user_type = $this->input->post('user_type');
+            $user_type = 3;
             $email = $this->input->post('register_email_address');
             $username = $this->input->post('register_username');
             $password = $this->input->post('passwordmain');
 
             $profile_data = array(
-                'upro_first_name' => $this->input->post('first_name'),
-                'upro_last_name' => $this->input->post('last_name'),
-                'landline_no' => $this->input->post('landline_no'),
-                'mobile_no' => $this->input->post('mobile_no')
+                'uadd_address_01' => $this->input->post('address'),
+                'uadd_post_code' => $this->input->post('pincode'),
+                'uadd_city' => $this->input->post('city'),
+                'user_type' => $this->input->post('user_type')
             );
             $instant_activate = FALSE;
             $response = $this->flexi_auth->insert_user($email, $username, $password, $profile_data, $user_type, $instant_activate);
             if ($response) {
+                $appartment_id = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
+                $this->db->update("user_accounts", array('appartment_id' => $appartment_id), array('uacc_id' => $response));
                 $email_data = array('identity' => $email, 'username' => $username);
                 $this->flexi_auth->send_email($email, 'Welcome', 'registration_welcome.tpl.php', $email_data);
                 $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
-                //if ($this->flexi_auth->is_logged_in() && $this->flexi_auth->is_admin()) {
-                //     redirect('auth_admin/add_user');
-                // } else {
-                $this->session->set_flashdata('inserted_user_id', $response);
-                redirect('reseller/signup');
-                //}
+                $this->session->set_flashdata('inserted_user_id', true);
+                return true;
             }
-            $this->data['user_data'] = $this->input->post();
             $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
+            $this->session->set_flashdata('inserted_user_id', false);
             return false;
         }
         $this->data['message'] = validation_errors('<p class="error_msg">', '</p>');
-        $this->data['user_data'] = $this->input->post();
+        $this->session->set_flashdata('message', validation_errors());
+        $this->session->set_flashdata('inserted_user_id', false);
         return FALSE;
     }
 
@@ -236,7 +234,7 @@ class Demo_auth_model extends CI_Model {
                 
             } else {
                 $this->session->set_flashdata('mail_sent', 1);
-            }            
+            }
             redirect('reseller/manual_reset_forgotten_password');
         } else {
             // Set validation errors.

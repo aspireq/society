@@ -85,15 +85,16 @@
                             <h4 class="modal-title" id="apartmentsignin">Sign In</h4>
                         </div>
                         <div class="modal-body">
-                            <form data-toggle="validator" role="form">
+                            <form data-toggle="validator" role="form" id="login_form" action="<?php echo base_url(); ?>home/login_via_ajax">
+                                <div id="login_message"></div>
                                 <div class="form-group label-floating">
                                     <label class="control-label" for="email">Email / Username</label>
-                                    <input class="form-control" id="email" type="email" data-error="Email address is invalid" required>
+                                    <input class="form-control" id="login_identity" name="login_identity" type="text" data-error="Email address is invalid" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group label-floating">
                                     <label class="control-label" for="password">Password</label>
-                                    <input class="form-control" id="password" type="password" data-minlength="6" data-error="Minimum of 6 characters" required>
+                                    <input class="form-control" id="login_password" name="login_password" type="password" data-minlength="6" data-error="Minimum of 6 characters" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group label-floating row m-10">
@@ -106,8 +107,9 @@
                                         <a href="" class="l-27">Forgot Password?</a>
                                     </div>
                                 </div>
+                                <input type="hidden" name="valid_login_url" id="valid_login_url" value="<?php echo base_url(); ?>user">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-raised btn-info btn-block">Sign In <i class="fa fa-send"></i></button>
+                                    <button type="submit" class="btn btn-raised btn-info btn-block" name="login_user" id="login_user">Sign In <i class="fa fa-send"></i></button>
                                 </div>
                             </form>
                         </div>
@@ -131,9 +133,8 @@
                         </div>
                         <div class="modal-body">
                             <form class="registerform" data-toggle="validator" role="form" method="post" id="register_user" action="<?php echo base_url(); ?>home/register">
-                                <div id="register_message">                            
-                                </div>
-                                <input type="hidden" name="valid_login_url" id="valid_login_url" value="<?php echo base_url(); ?>auth_public"/>
+                                <div id="register_message">
+                                </div>                               
                                 <div class="col-md-6">
                                     <div class="form-group label-floating">
                                         <label class="control-label" for="apartmentname">Apartment Name<sup>*</sup></label>
@@ -158,7 +159,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group label-floating">
                                         <label class="control-label" for="mobile_no">Phone / Mobile <sup>*</sup></label>
-                                        <input class="form-control" id="mobile_no" name="mobile_no" type="text" data-error="Enter valid phone/mobile number" required>
+                                        <input class="form-control" id="mobile_no" name="mobile_no" type="text" data-error="Enter valid phone/mobile number" required maxlength="10">
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
@@ -176,7 +177,7 @@
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-12">
                                     <div class="form-group label-floating">
                                         <label class="control-label" for="address">Address<sup>*</sup></label>
@@ -186,11 +187,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group label-floating">
-<!--                                        <label class="control-label" for="city">Select City<sup>*</sup></label>-->
+                                        <label class="control-label" for="city">Select City<sup>*</sup></label>
                                         <select class="form-control" name="city" id="city" required="" data-error="Enter city">
                                             <option value="">Select City</option>
-                                            <option value="Surat">Surat</option>
-                                            <option value="Ahmedabad">Ahmedabad</option>                                        
+                                            <?php foreach ($cities as $city) { ?>
+                                                <option value="<?php echo $city->id; ?>"><?php echo $city->name; ?></option>
+                                            <?php } ?>
                                         </select>
                                         <div class="help-block with-errors"></div>
                                     </div>
@@ -198,7 +200,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group label-floating">
                                         <label class="control-label" for="pincode">Pincode<sup>*</sup></label>
-                                        <input class="form-control" name="pincode" id="pincode" required data-error="Enter pincode"></input>                                    
+                                        <input class="form-control" name="pincode" id="pincode" required data-error="Enter pincode" maxlength="8"></input>                                    
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
@@ -233,10 +235,10 @@
                                 <div class="col-md-6">
                                     <div class="m-t-15">
                                         <label class="radio-inline">
-                                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Owner
+                                            <input type="radio" name="user_type" id="user_type_owner" value="1"> Owner
                                         </label>
                                         <label class="radio-inline">
-                                           <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Tenant
+                                            <input type="radio" name="user_type" id="user_type_tenant" value="2"> Tenant
                                         </label>
                                     </div>
                                 </div>

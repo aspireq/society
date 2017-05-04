@@ -140,7 +140,6 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
                 return FALSE;
             }
         }
-
         ###+++++++++++++++++++++++++++++++++###
         // Get group ID if it was passed in additional data array.
         if (isset($custom_data[$this->auth->database_config['user_group']['columns']['id']]) && is_numeric($custom_data[$this->auth->database_config['user_group']['columns']['id']])) {
