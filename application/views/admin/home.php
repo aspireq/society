@@ -78,7 +78,7 @@
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <button type="button" class="btn btn-info btn-lg btn-block choose-plan2">View All</button>
+                                                <button type="button" class="btn btn-info btn-lg btn-block choose-plan2" onclick="window.location.href = '<?php echo base_url(); ?>auth_admin/manage_users'">View All</button>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -105,7 +105,7 @@
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <button type="button" class="btn btn-info btn-lg btn-block choose-plan2">View All</button>
+                                                <button type="button" class="btn btn-info btn-lg btn-block choose-plan2" onclick="window.location.href = '<?php echo base_url(); ?>auth_admin/profile_setup'">View All</button>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">

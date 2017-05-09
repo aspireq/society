@@ -29,25 +29,36 @@
                                     </div>
                                 <?php } ?>
                                 <ul class="nav nav-tabs">
-                                    <li class=""><a href="#tabOne" data-toggle="tab" aria-expanded="false">Home</a></li>
-                                    <li class="active"><a href="#tabTwo" data-toggle="tab" aria-expanded="true">Images</a></li>
+                                    <li class="active"><a href="#tabOne" data-toggle="tab" aria-expanded="false">Home</a></li>
+                                    <li class=""><a href="#tabTwo" data-toggle="tab" aria-expanded="true">Images</a></li>
                                     <li class=""><a href="#tabThree" data-toggle="tab" aria-expanded="false">Location</a></li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane" id="tabOne">
+                                    <div class="tab-pane active" id="tabOne">
                                         <h4>Welcome Message</h4>
                                         <p>Here you can enter a greeting message for outsiders, instructions for owners/tenants to join your ADDA, status of your Project ( if it is under construction) etc.</p>
-                                        <form>
-                                            <div class="form-group">
-                                                <textarea id="txtEditor">At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. </textarea>
+                                        <form method="post">
+                                            <div class="form-group">                                                
+                                                <textarea id="txtEditor" name="txtEditor" rows="10" cols="130"><?php echo (!empty($appartment_info) && $appartment_info->info != "") ? $appartment_info->info : '' ?></textarea>
                                             </div>
-                                            <button class="btn btn-info">Save</button>
+                                            <button class="btn btn-info" name="add_info" id="add_info" value="add_info" type="submit">Save</button>
                                         </form>
                                     </div>
                                     <!-- tab one -->
-                                    <div class="tab-pane active" id="tabTwo">
+                                    <div class="tab-pane" id="tabTwo">
                                         <form method="post" id="society_images" enctype="multipart/form-data">
                                             <input type="hidden" name="code" id="code" value="1234">
+                                            <div class="row oldimage">
+                                                <?php foreach ($appartment_images as $image) { ?>                                                
+                                                    <div class="col-md-3">
+                                                        <div class="thumbnail">
+                                                            <a class="close"><i class="fa fa-times-circle"></i></a>
+                                                            <input type="hidden" name="old_company_images[]" id="<?php echo $image->image; ?>" value="<?php echo $image->image; ?>">
+                                                            <img src="<?php echo base_url(); ?>include_files/appartment_images/<?php echo $image->image; ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
                                             <div class="form-group">
                                                 <label class="control-label">Select File</label>
                                                 <input type="file" id="input-44" name="userFiles[]" multiple class="file-loading form-control">
@@ -153,14 +164,18 @@
         <script src="<?php echo base_url(); ?>include_files/admin/js/datatables/fixedHeader.min.js"></script>
         <script src="<?php echo base_url(); ?>include_files/admin/js/datatables/custom-datatables.js"></script>
         <script src="<?php echo base_url(); ?>include_files/admin/js/common.js"></script>
-        <script src="<?php echo base_url(); ?>include_files/admin/js/wysiwyg-editor/editor.js"></script>
+        <script src="<?php echo base_url(); ?>include_files/admin/js/wysiwyg-editor/editor.js"></script>        
         <script type="text/javascript">
             $(function () {
-                $("#txtEditor").Editor();
+                //$("#txtEditor").Editor();               
             });
         </script>
         <script>
             $(document).ready(function () {
+                $('.close').click(function () {
+                    $(this).parents('.oldimage .col-md-3').remove();
+                    $(this).closest('input').remove();
+                });
                 $('#pincode, #phone').on('change keyup', function () {
                     var sanitized = $(this).val().replace(/[^-.0-9]/g, '');
                     sanitized = sanitized.replace(/(.)-+/g, '$1');

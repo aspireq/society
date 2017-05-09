@@ -83,7 +83,7 @@ class Demo_auth_model extends CI_Model {
     }
 
     function register_account() {
-
+        
         $this->load->library('form_validation');
         $validation_rules = array(
             array('field' => 'register_email_address', 'label' => 'Email Address', 'rules' => 'required|valid_email'),

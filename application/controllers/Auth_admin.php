@@ -48,48 +48,72 @@ class Auth_admin extends CI_Controller {
 
     function manage_users() {
         if ($this->input->post()) {
-            echo "<pre>";
-            print_r($this->input->post());
-            die();
+            $this->load->model('demo_auth_model');
+            $usernames = $this->input->post('username');
+            $passwords = $this->input->post('password');
+            $blocks = $this->input->post('block');
+            $mobiles = $this->input->post('mobile');
+            $intercom = $this->input->post('intercom');
+            $emails = $this->input->post('email');
+            foreach ($usernames as $key => $user) {
+                if ($usernames[$key] != "" && $passwords[$key] != "" && $emails[$key] != "") {
+                    $this->Common_model->register_account($usernames[$key], $emails[$key], $passwords[$key], $key + 1);
+                    $this->data['message'] = $this->session->flashdata('message');
+                    $this->data['message_type'] = false;
+                }
+            }
         }
         $this->data['message'] = (!isset($this->data['message'])) ? $this->session->flashdata('message') : $this->data['message'];
         $this->data = $this->include_files();
         $this->load->view('admin/manage_users', $this->data);
     }
 
-    function profile_setup() {        
+    function profile_setup() {
         if ($this->input->post('add_images') == 'add_images') {
             $this->load->library('form_validation');
             $this->form_validation->set_rules('code', 'Code', 'trim|required');
-            if (empty($_FILES['userFiles']['name'][0])) {
-                $this->form_validation->set_rules('images', 'Image', 'required');
-            }
+//            if (empty($_FILES['userFiles']['name'][0])) {
+//                $this->form_validation->set_rules('images', 'Image', 'required');
+//            }
             if ($this->form_validation->run() == true) {
-                $filesCount = count($_FILES['userFiles']['name']);
-                for ($i = 0; $i < $filesCount; $i++) {
-                    $_FILES['userFile']['name'] = $_FILES['userFiles']['name'][$i];
-                    $_FILES['userFile']['type'] = $_FILES['userFiles']['type'][$i];
-                    $_FILES['userFile']['tmp_name'] = $_FILES['userFiles']['tmp_name'][$i];
-                    $_FILES['userFile']['error'] = $_FILES['userFiles']['error'][$i];
-                    $_FILES['userFile']['size'] = $_FILES['userFiles']['size'][$i];
-
-                    $uploadPath = 'include_files/appartment_images';
-                    $config['upload_path'] = $uploadPath;
-                    $config['allowed_types'] = 'gif|jpg|png';
-                    $config['encrypt_name'] = TRUE;
-                    $this->load->library('upload', $config);
-                    $this->upload->initialize($config);
-                    if (!$this->upload->do_upload('userFile')) {
-                        $this->data['message'] = $this->upload->display_errors();
-                        $this->data['message_type'] = false;
-                    } else {
-                        $fileData = $this->upload->data();
-                        $uploadData[$i]['image'] = $fileData['file_name'];
+                $old_images_post = $this->input->post('old_company_images');
+                $old_images_table = $this->db->query("select image from appartment_images where user_id = '" . $this->user_id . "'")->result_array();
+                $final_images = array_diff(array_column($old_images_table, 'image'), $old_images_post);
+                foreach ($final_images as $row_image) {
+                    if (file_exists(FCPATH . 'include_files/appartment_images/' . $row_image)) {
+                        unlink(FCPATH . 'include_files/appartment_images/' . $row_image);
+                        $this->Common_model->delete_where('appartment_images', array('user_id' => $this->user_id, 'image' => $row_image));
                     }
                 }
-                if (!empty($uploadData)) {
-                    $this->data['message'] = "Images added succesfully !";
-                    $this->data['message_type'] = true;
+                if (!empty($_FILES['userFiles']['name'][0])) {
+                    $filesCount = count($_FILES['userFiles']['name']);
+                    for ($i = 0; $i < $filesCount; $i++) {
+                        $_FILES['userFile']['name'] = $_FILES['userFiles']['name'][$i];
+                        $_FILES['userFile']['type'] = $_FILES['userFiles']['type'][$i];
+                        $_FILES['userFile']['tmp_name'] = $_FILES['userFiles']['tmp_name'][$i];
+                        $_FILES['userFile']['error'] = $_FILES['userFiles']['error'][$i];
+                        $_FILES['userFile']['size'] = $_FILES['userFiles']['size'][$i];
+
+                        $uploadPath = 'include_files/appartment_images';
+                        $config['upload_path'] = $uploadPath;
+                        $config['allowed_types'] = 'gif|jpg|png';
+                        $config['encrypt_name'] = TRUE;
+                        $this->load->library('upload', $config);
+                        $this->upload->initialize($config);
+                        if (!$this->upload->do_upload('userFile')) {
+                            $this->data['message'] = $this->upload->display_errors();
+                            $this->data['message_type'] = false;
+                        } else {
+                            $fileData = $this->upload->data();
+                            $uploadData[$i]['image'] = $fileData['file_name'];
+                            $uploadData[$i]['user_id'] = $this->user_id;
+                        }
+                    }
+                    if (!empty($uploadData)) {
+                        $this->db->insert_batch('appartment_images', $uploadData);
+                        $this->data['message'] = "Images added succesfully !";
+                        $this->data['message_type'] = true;
+                    }
                 }
             } else {
                 $this->data['message'] = validation_errors('<p class="error_msg">', '</p>');
@@ -107,16 +131,26 @@ class Auth_admin extends CI_Controller {
                 'association_name' => $this->input->post('association_name'),
                 'amenities' => $this->input->post('amenities')
             );
-            $check_existing = $this->Common_model->select_where_row('appartment_info',array('user_id' => $this->user_id));            
-            if(!empty($check_existing)) {               
-                $this->Common_model->select_update('appartment_info',$appartment_info,array('user_id' => $this->user_id));
-            }else {
-                $this->Common_model->insert('appartment_info',$appartment_info);
+            $check_existing = $this->Common_model->select_where_row('appartment_info', array('user_id' => $this->user_id));
+            if (!empty($check_existing)) {
+                $this->Common_model->select_update('appartment_info', $appartment_info, array('user_id' => $this->user_id));
+            } else {
+                $this->Common_model->insert('appartment_info', $appartment_info);
+            }
+            $this->data['message'] = "Appartment information saved succesfully !";
+            $this->data['message_type'] = true;
+        } else if ($this->input->post('add_info') == 'add_info') {
+            $check_existing = $this->Common_model->select_where_row('appartment_info', array('user_id' => $this->user_id));
+            if (!empty($check_existing)) {
+                $this->Common_model->select_update('appartment_info', array('info' => $this->input->post('txtEditor')), array('user_id' => $this->user_id));
+            } else {
+                $this->Common_model->insert('appartment_info', array('info' => $this->input->post('txtEditor'), 'user_id' => $this->user_id));
             }
             $this->data['message'] = "Appartment information saved succesfully !";
             $this->data['message_type'] = true;
         }
-        $this->data['appartment_info'] = $this->Common_model->select_where_row('appartment_info',array('user_id' => $this->user_id));        
+        $this->data['appartment_info'] = $this->Common_model->select_where_row('appartment_info', array('user_id' => $this->user_id));
+        $this->data['appartment_images'] = $this->Common_model->select_where('appartment_images', array('user_id' => $this->user_id));
         $this->data['message'] = (!isset($this->data['message'])) ? $this->session->flashdata('message') : $this->data['message'];
         $this->data = $this->include_files();
         $this->load->view('admin/profile_setup', $this->data);
